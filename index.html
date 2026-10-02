@@ -1,0 +1,106 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spezza la Catena</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<link rel="stylesheet" href="css/style.css">
+
+<canvas id="bg" aria-hidden="true"></canvas>
+<div class="crt" aria-hidden="true"></div>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<main class="table" id="table">
+  <header class="top">
+    <div class="who">
+      <p class="eyebrow" id="eyebrow">Kill chain a 7 fasi</p>
+      <h1 id="foeName">Spezza la Catena</h1>
+      <p class="reserves" id="reserves"></p>
+    </div>
+    <section class="score" aria-live="polite">
+      <div class="eq">
+        <div class="box base"><span class="lab">Copertura</span><b id="base">0</b></div>
+        <span class="x">×</span>
+        <div class="box mult" id="multBox"><span class="lab">Molt</span><b id="mult">1</b></div>
+      </div>
+      <div class="box total"><span class="lab">Difesa</span><span><b id="total">0</b> <span class="goal">/ <span id="goal">0</span></span></span></div>
+    </section>
+  </header>
+
+  <div class="status">
+    <span class="stat">Resilienza <span class="pipsrow" id="lives"></span></span>
+    <span class="stat">Fondi <b id="funds">0</b></span>
+    <span class="stat">Collezione <b id="deckN">0</b></span>
+    <ol class="steps" id="steps" aria-label="Turni dell'attacco"></ol>
+  </div>
+
+  <div class="arena" id="arena">
+    <div class="board">
+      <div class="trackwrap"><section class="track" id="track" aria-label="Kill chain a 7 fasi"></section></div>
+      <div class="stamp" id="stamp" hidden></div>
+    </div>
+
+    <div class="mid">
+      <div class="jokers" id="jokers"></div>
+      <p class="info" id="info" aria-live="polite"></p>
+      <div class="side">
+        <div class="budget"><span>Crediti <b id="credN">0</b></span><span class="coins" id="coins"></span></div>
+        <div class="btns">
+          <button class="btn primary" id="advanceBtn" type="button" disabled>Avanza</button>
+          <button class="btn" id="discardBtn" type="button" disabled>Scarta</button>
+          <button class="btn" id="howBtn" type="button" disabled>Come funziona</button>
+        </div>
+        <div class="btns">
+          <button class="btn small" id="sfxBtn" type="button" aria-pressed="false">Effetti attivi</button>
+          <button class="btn small" id="musBtn" type="button" aria-pressed="true">Musica spenta</button>
+        </div>
+      </div>
+    </div>
+
+    <section class="hand" id="hand" aria-label="La tua mano"></section>
+    <section class="debrief" id="debrief" hidden></section>
+  </div>
+
+  <section class="prep" id="prep" hidden></section>
+  <section class="shop" id="shop" hidden></section>
+</main>
+
+<div class="cut" id="cut" hidden>
+  <div class="cutbox">
+    <div class="cutstage" id="cutStage">
+      <canvas id="cutCv" aria-hidden="true"></canvas>
+      <div class="cutcard" id="cutCard" hidden><b id="cardBig"></b><span id="cardSub"></span></div>
+    </div>
+    <div class="simwin" id="simWin" hidden>
+      <div class="simbar"><i></i><i></i><i></i><span id="simTitle"></span></div>
+      <div class="simbody" id="simBody"></div>
+    </div>
+    <div class="cuttitle" id="cutTitle" hidden>
+      <p class="kicker">Serious game sulla cybersecurity</p>
+      <h1 class="biglogo">Spezza la Catena</h1>
+      <p class="tagline">Sei città. Sei attacchi. Una sola mano dietro.</p>
+      <div class="btns">
+        <button class="btn primary" id="contBtn" type="button" hidden>Continua</button>
+        <button class="btn primary" id="startBtn" type="button">Nuova campagna</button>
+        <button class="btn" id="helpBtn" type="button">Come si gioca</button>
+      </div>
+    </div>
+    <div class="cutcap" id="cutCap" aria-live="polite">
+      <p class="cutplace" id="cutPlace"></p>
+      <p class="cuttext" id="cutText"></p>
+      <div class="cutfoot"><span class="cuthint" id="cutHint" hidden></span><button class="btn small" id="cutSkip" type="button">Salta</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal" hidden><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
+
+<script src="js/data.js"></script>
+<script src="js/sims.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/bg.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/fx.js"></script>
+<script src="js/scenes.js"></script>
+<script src="js/cutscene.js"></script>
+<script src="js/game.js"></script>
+<script src="js/autotest.js"></script>
