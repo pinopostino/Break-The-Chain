@@ -331,10 +331,10 @@ window.SLC = window.SLC || {};
     ]),
     ti: A('Threat intelligence · bollettino', 'def', [
       ['out', 'Gruppo attivo contro acquedotti e servizi pubblici'],
-      ['out', 'Usa file chiamati «aggiornamento_pompe.exe»'],
-      ['out', 'Server di comando: cdn-update.example'],
-      ['good', 'Indicatori caricati su antivirus e firewall'],
-      ['stop', 'Lo strumento viene riconosciuto al primo tentativo.'],
+      ['out', 'Compra sul mercato nero il kit «PortaAperta» v3'],
+      ['out', 'Server di comando del kit: cdn-update.example'],
+      ['good', 'Indicatori del kit caricati su antivirus e firewall'],
+      ['stop', 'Uno strumento già noto viene riconosciuto al primo tentativo.'],
     ]),
     mailf: T('Filtro email · analisi del messaggio', 'def', [
       ['out', 'Da: fatture@idrotec-pagamenti.example'],

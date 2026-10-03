@@ -6,12 +6,6 @@
   const shuffle = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(x => x[1]);
   const retrigger = (el, cls) => { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); };
 
-  function icon(k) {
-    let r = '';
-    G.ICONS[k].forEach((row, y) => { for (let x = 0; x < 8; x++) if (row[x] === '#') r += `<rect x="${x}" y="${y}" width="1.03" height="1.03"/>`; });
-    return `<svg class="ico" viewBox="0 0 8 8" fill="currentColor" shape-rendering="crispEdges" aria-hidden="true">${r}</svg>`;
-  }
-
   /* ---------- illustrazioni delle carte ---------- */
   // Raddoppia un'icona 8x8 a 16x16 smussando le diagonali (algoritmo Scale2x).
   function scale2x(rows) {
@@ -59,7 +53,7 @@
       if (at(x, y)) px(!at(x, y - 1) || !at(x - 1, y) ? T.hi : !at(x, y + 1) || !at(x + 1, y) ? T.lo : T.base, ox + x, oy + y);
     }
   }
-  // Dorso delle carte del red team: losanghe e un'eclissi al centro.
+  // Dorso delle carte dell'attaccante: losanghe e un'eclissi al centro.
   function drawBack(cv) {
     const W = 30, H = 40, c = cv.getContext('2d');
     cv.width = W; cv.height = H;
@@ -108,26 +102,32 @@
     return s;
   }
 
-  function redEl(t, p) {
+  // Carta dell'attaccante, coperta: la faccia resta vuota finché paintRed non la scrive,
+  // così nome e codice della tecnica non si trovano nella pagina prima del tempo.
+  function redEl(p) {
     const s = document.createElement('button');
     s.type = 'button'; s.className = 'slot red down';
-    s.setAttribute('aria-label', `Fase ${p + 1}: carta coperta del red team`);
+    s.setAttribute('aria-label', `Fase ${p + 1}: carta coperta dell'attaccante`);
     s.innerHTML = `<span class="flip">
       <span class="card back"><canvas></canvas></span>
-      <span class="card front"><span class="band"><span>ATT&amp;CK</span></span>
+      <span class="card front"></span></span>`;
+    drawBack(s.querySelector('.back canvas'));
+    return s;
+  }
+  function paintRed(s, t) {
+    const f = s.querySelector('.front');
+    f.innerHTML = `<span class="band"><span>ATT&amp;CK</span></span>
         <span class="art"><canvas></canvas></span>
         <span class="tidline">${t.id}</span>
-        <span class="name">${t.n}</span></span></span>`;
-    drawBack(s.querySelector('.back canvas'));
-    drawArt(s.querySelector('.front canvas'), t.i, 'red', t.k);
-    return s;
+        <span class="name">${t.n}</span>`;
+    drawArt(f.querySelector('canvas'), t.i, 'red', t.k);
   }
 
   function jokerEl(j, owned) {
     const d = document.createElement('div');
-    d.className = 'joker'; d.tabIndex = 0;
+    d.className = 'joker' + (j.debt ? ' debt' : ''); d.tabIndex = 0;
     if (owned) d.id = 'jk-' + j.k;
-    d.innerHTML = `<em>JOKER</em><strong>${j.n}</strong><span>${j.e}</span>`;
+    d.innerHTML = `<em>${j.debt ? 'DEBITO' : 'JOKER'}</em><strong>${j.n}</strong><span>${j.e}</span>`;
     return d;
   }
 
@@ -173,8 +173,12 @@
     });
   }
 
-  function modal(html, actions) {
+  // Finestra modale. o.dismiss = true: si chiude anche con Esc. Il focus resta dentro e torna dov'era alla chiusura.
+  let modalBack = null, modalDismiss = false;
+  function modal(html, actions, o) {
     const sheet = $('sheet');
+    if ($('modal').hidden) modalBack = document.activeElement;
+    modalDismiss = !!(o && o.dismiss);
     sheet.innerHTML = html + '<div class="sheetbtns"></div>';
     const bar = sheet.querySelector('.sheetbtns');
     (actions || []).forEach(a => {
@@ -189,7 +193,23 @@
     if (first) first.focus();
     return sheet;
   }
-  function closeModal() { $('modal').hidden = true; }
+  function closeModal() {
+    if ($('modal').hidden) return;
+    $('modal').hidden = true;
+    if (modalBack && document.contains(modalBack) && typeof modalBack.focus === 'function') modalBack.focus();
+    modalBack = null;
+  }
+  document.addEventListener('keydown', e => {
+    if ($('modal').hidden) return;
+    if (e.key === 'Escape' && modalDismiss) { e.preventDefault(); closeModal(); return; }
+    if (e.key !== 'Tab') return;
+    const f = [...$('sheet').querySelectorAll('button:not(:disabled), [tabindex="0"]')];
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    else if (!$('sheet').contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+  });
 
-  G.ui = { $, calm, sleep, shuffle, retrigger, icon, costOf, ptsOf, describe, paintBlue, blueEl, redEl, jokerEl, fly, fan, pop, countTo, modal, closeModal };
+  G.ui = { $, calm, sleep, shuffle, retrigger, costOf, ptsOf, describe, paintBlue, paintRed, blueEl, redEl, jokerEl, fly, fan, pop, countTo, modal, closeModal };
 })(window.SLC);

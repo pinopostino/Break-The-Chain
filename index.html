@@ -1,4 +1,5 @@
 <!doctype html>
+<html lang="it">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Spezza la Catena</title>
@@ -16,7 +17,7 @@
       <h1 id="foeName">Spezza la Catena</h1>
       <p class="reserves" id="reserves"></p>
     </div>
-    <section class="score" aria-live="polite">
+    <section class="score">
       <div class="eq">
         <div class="box base"><span class="lab">Copertura</span><b id="base">0</b></div>
         <span class="x">×</span>
@@ -31,6 +32,7 @@
     <span class="stat">Fondi <b id="funds">0</b></span>
     <span class="stat">Collezione <b id="deckN">0</b></span>
     <ol class="steps" id="steps" aria-label="Turni dell'attacco"></ol>
+    <button class="btn small" id="rulesBtn" type="button">Regole</button>
   </div>
 
   <div class="arena" id="arena">
@@ -41,7 +43,7 @@
 
     <div class="mid">
       <div class="jokers" id="jokers"></div>
-      <p class="info" id="info" aria-live="polite"></p>
+      <p class="info" id="info"></p>
       <div class="side">
         <div class="budget"><span>Crediti <b id="credN">0</b></span><span class="coins" id="coins"></span></div>
         <div class="btns">
@@ -51,7 +53,8 @@
         </div>
         <div class="btns">
           <button class="btn small" id="sfxBtn" type="button" aria-pressed="false">Effetti attivi</button>
-          <button class="btn small" id="musBtn" type="button" aria-pressed="true">Musica spenta</button>
+          <button class="btn small" id="musBtn" type="button" aria-pressed="false">Musica spenta</button>
+          <button class="btn small" id="crtBtn" type="button" aria-pressed="true">Effetto CRT attivo</button>
         </div>
       </div>
     </div>
@@ -91,6 +94,8 @@
     </div>
   </div>
 </div>
+
+<p class="sr-only" id="announce" aria-live="polite"></p>
 
 <div class="modal" id="modal" hidden><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
 

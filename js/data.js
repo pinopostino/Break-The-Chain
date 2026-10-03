@@ -1,4 +1,4 @@
-/* Dati di gioco: fasi, tecniche del red team, difese, joker, missioni della campagna, icone.
+/* Dati di gioco: fasi, tecniche dell'attaccante, difese, joker, missioni della campagna, icone.
    Per aggiungere contenuti basta modificare questo file: la logica sta in game.js. */
 window.SLC = window.SLC || {};
 (function (G) {
@@ -42,24 +42,24 @@ window.SLC = window.SLC || {};
   G.DEFS = [
     { k: 'hard', start: true, n: 'Hardening perimetro', c: 2, p: 30, i: 'shield', x: ['scan', 'remote'], d: 'Chiude porte e servizi inutili: da fuori si vede e si raggiunge poco.' },
     { k: 'social', start: true, n: 'Igiene social', c: 1, p: 20, i: 'bubble', x: ['osint'], d: 'Regole su cosa si pubblica online: meno informazioni da raccogliere.' },
-    { k: 'ti', start: true, n: 'Threat intelligence', c: 2, p: 30, i: 'lens', x: ['maldev', 'tool'], d: 'Conosci in anticipo gli strumenti dell\'avversario e sai riconoscerli.' },
-    { k: 'mailf', start: true, n: 'Filtro email', c: 2, p: 35, i: 'mail', x: ['phish', 'infophish'], d: 'Blocca i messaggi malevoli prima che arrivino nella casella.' },
+    { k: 'ti', start: true, n: 'Threat intelligence', c: 2, p: 30, i: 'lens', x: ['tool'], d: 'Conosci in anticipo gli strumenti già usati dall\'avversario e sai riconoscerli.' },
+    { k: 'mailf', start: true, n: 'Filtro email', c: 2, p: 40, i: 'mail', x: ['phish', 'infophish'], d: 'Blocca i messaggi malevoli prima che arrivino nella casella.' },
     { k: 'usbb', start: true, n: 'Blocco porte USB', c: 1, p: 25, i: 'usb', x: ['usb'], d: 'I computer aziendali rifiutano i supporti non autorizzati.' },
     { k: 'train', start: true, n: 'Formazione', c: 2, p: 30, i: 'person', x: ['phish', 'infophish', 'usb'], d: 'I dipendenti riconoscono l\'inganno e non ci cascano.' },
     { k: 'patch', start: true, n: 'Patch management', c: 2, p: 40, i: 'plus', x: ['pubexp'], d: 'Le vulnerabilità note vengono corrette prima che qualcuno le sfrutti.' },
     { k: 'nomacro', start: true, n: 'Macro disattivate', c: 1, p: 25, i: 'doc', x: ['macro'], d: 'I documenti non possono eseguire codice.' },
-    { k: 'edr', start: true, n: 'EDR', c: 3, p: 45, i: 'radar', x: ['autorun', 'service', 'ransom'], d: 'Sorveglia i computer e ferma i comportamenti anomali.' },
+    { k: 'edr', start: true, n: 'EDR', c: 3, p: 45, i: 'radar', x: ['maldev', 'autorun', 'service', 'ransom'], d: 'Endpoint Detection and Response: sorveglia i computer e ferma i comportamenti anomali, anche quelli di un malware mai visto.' },
     { k: 'audit', start: true, n: 'Audit account', c: 1, p: 25, i: 'key', x: ['acct'], d: 'Controlli periodici trovano gli account che nessuno ha richiesto.' },
     { k: 'proxy', start: true, n: 'Proxy con ispezione', c: 2, p: 35, i: 'lock', x: ['c2web', 'exfil'], d: 'Apre e controlla il traffico web cifrato in uscita.' },
     { k: 'dnsmon', start: true, n: 'Monitoraggio DNS', c: 2, p: 30, i: 'antenna', x: ['c2dns'], d: 'Nota le richieste DNS anomale per volume e forma.' },
     { k: 'backup', start: true, n: 'Backup offline', c: 2, p: 40, i: 'disk', x: ['ransom', 'wipe'], d: 'Una copia dei dati che l\'attaccante non può raggiungere.' },
-    { k: 'dlp', start: true, n: 'DLP', c: 2, p: 35, i: 'wall', x: ['exfil'], d: 'Impedisce ai dati riservati di lasciare la rete.' },
+    { k: 'dlp', start: true, n: 'DLP', c: 1, p: 35, i: 'wall', x: ['exfil'], d: 'Data Loss Prevention: impedisce ai dati riservati di lasciare la rete.' },
     { k: 'mfa', n: 'MFA', c: 2, p: 40, i: 'phone', x: ['remote', 'valid'], d: 'Per entrare serve un secondo fattore: una password rubata non basta più.' },
     { k: 'domwatch', n: 'Sorveglianza domini', c: 1, p: 25, i: 'flag', x: ['domain'], d: 'Ti avvisa quando qualcuno registra un dominio simile al tuo.' },
     { k: 'vendor', n: 'Verifica fornitori', c: 2, p: 35, i: 'check', x: ['supply'], d: 'Controlli di sicurezza su chi ti fornisce software e servizi, e sui loro aggiornamenti.' },
     { k: 'least', n: 'Privilegi minimi', c: 2, p: 35, i: 'steps', x: ['service', 'acct'], d: 'Ogni utente ha solo i permessi che gli servono: senza diritti di amministratore non si installa nulla.' },
     { k: 'allow', n: 'Lista applicazioni', c: 2, p: 35, i: 'list', x: ['rat', 'macro'], d: 'Sui computer girano solo i programmi approvati.' },
-    { k: 'segm', n: 'Segmentazione di rete', c: 3, p: 45, i: 'grid', x: ['wipe', 'ransom'], d: 'La rete è divisa in zone: un danno in una zona non raggiunge le altre.' },
+    { k: 'segm', n: 'Segmentazione di rete', c: 2, p: 45, i: 'grid', x: ['wipe', 'ransom'], d: 'La rete è divisa in zone: un danno in una zona non raggiunge le altre.' },
   ];
 
   G.EDITIONS = {
@@ -69,17 +69,18 @@ window.SLC = window.SLC || {};
   };
 
   // e = effetto nel gioco, l = cosa significa nella realtà. Gli effetti sono implementati in game.js.
+  // debt: true = un debito tecnico. Non si compra: si accetta in cambio di fondi (gain) e si estingue pagando price.
   G.JOKERS = [
-    { k: 'honey', n: 'Honeypot', price: 4, e: 'Ogni difesa aggirata vale comunque +15 Copertura.', l: 'Un honeypot è un sistema esca: l\'attaccante ci perde tempo e si fa notare.' },
-    { k: 'depth', n: 'Difesa in profondità', price: 6, e: 'Se blocchi almeno 4 fasi, a fine attacco il Molt raddoppia.', l: 'Nessuna difesa è perfetta: più strati indipendenti rendono improbabile che cedano tutti.' },
-    { k: 'shadow', n: 'Shadow IT', price: 5, e: '+3 Molt a inizio attacco, ma una fase a caso non può ricevere difese.', l: 'Lo shadow IT sono i sistemi usati senza che il reparto IT lo sappia: comodi, ma nessuno li protegge.' },
+    { k: 'honey', n: 'Honeypot', price: 4, e: 'Quando una fase passa, l\'attaccante si tradisce: la prossima carta coperta dei turni successivi viene scoperta.', l: 'Un honeypot è un sistema esca: l\'attaccante ci perde tempo e si fa notare.' },
+    { k: 'depth', n: 'Difesa in profondità', price: 6, e: 'Se blocchi almeno 3 fasi con due difese schierate, a fine attacco il Molt raddoppia.', l: 'Nessuna difesa è perfetta: più strati indipendenti rendono improbabile che cedano tutti.' },
+    { k: 'shadow', n: 'Shadow IT', debt: true, gain: 4, price: 6, e: 'Debito: in ogni attacco una fase a caso tra la 1 e la 6 non può ricevere difese.', l: 'Lo shadow IT sono i sistemi usati senza che il reparto IT lo sappia: comodi, ma nessuno li protegge.' },
     { k: 'intern', n: 'Stagista', price: 4, e: 'A ogni turno una carta in mano costa 0, ma un\'altra viene scartata.', l: 'Chi non è formato può aiutare molto o fare danni: l\'errore umano è tra le cause più frequenti di incidente.' },
-    { k: 'bounty', n: 'Bug bounty', price: 5, e: 'Rivela la fase 7 a inizio attacco. Costa 1 fondo per attacco.', l: 'Un programma di bug bounty paga ricercatori esterni perché segnalino le falle prima dei criminali.' },
-    { k: 'legacy', n: 'Sistema legacy', price: 5, e: 'Ogni blocco vale +40 Copertura, ma ricevi 1 credito in meno a turno.', l: 'I sistemi vecchi fanno ancora lavoro prezioso, ma mantenerli sicuri costa sempre di più.' },
-    { k: 'purple', n: 'Purple team', price: 6, e: 'Quando blocchi anche il ripiego del red team: +3 Molt.', l: 'Nel purple teaming attaccanti e difensori lavorano insieme, così la difesa conosce in anticipo le mosse.' },
+    { k: 'bounty', n: 'Bug bounty', price: 5, e: 'Rivela la fase 4 (Exploit) a inizio attacco. Costa 1 fondo per attacco, solo se la fase non era già nota.', l: 'Un programma di bug bounty paga ricercatori esterni perché segnalino le tue falle prima che le sfruttino i criminali.' },
+    { k: 'legacy', n: 'Sistema legacy', debt: true, gain: 4, price: 6, e: 'Debito: ricevi 1 credito in meno a ogni turno.', l: 'I sistemi vecchi fanno ancora lavoro prezioso, ma mantenerli sicuri costa sempre di più.' },
+    { k: 'purple', n: 'Purple team', price: 6, e: 'Quando blocchi anche il ripiego dell\'attaccante: +3 Molt.', l: 'Nel purple teaming chi simula l\'attacco e chi difende lavorano insieme, così la difesa conosce in anticipo le mosse.' },
     { k: 'zerotrust', n: 'Zero Trust', price: 6, e: 'Ogni blocco nelle fasi 4-7 dà +1 Molt in più.', l: 'Zero Trust: non fidarsi di nessuno solo perché è già dentro la rete, e verificare ogni accesso.' },
-    { k: 'insurance', n: 'Polizza cyber', price: 4, e: 'Se perdi un attacco non perdi Resilienza, ma questo joker si distrugge.', l: 'Un\'assicurazione copre i danni economici, ma non impedisce l\'incidente.' },
-    { k: 'soc247', n: 'SOC 24/7', price: 5, e: 'La prima analisi del SOC di ogni turno è gratis.', l: 'Un Security Operations Center sorveglia la rete a ogni ora: prima vedi, prima reagisci.' },
+    { k: 'insurance', n: 'Polizza cyber', price: 4, e: 'Se perdi un attacco non perdi Resilienza, ma questo joker si distrugge. Non vale nell\'ultima missione.', l: 'Un\'assicurazione copre i danni economici, ma non impedisce l\'incidente.' },
+    { k: 'soc247', n: 'SOC 24/7', price: 5, e: 'Nel primo turno di ogni attacco tutte le analisi del SOC sono gratis.', l: 'Un Security Operations Center sorveglia la rete a ogni ora: prima vedi, prima reagisci.' },
     { k: 'tabletop', n: 'Esercitazione', price: 5, e: '+1 carta in mano.', l: 'Nelle esercitazioni tabletop si simula un incidente a tavolino per arrivare preparati a quello vero.' },
   ];
 
@@ -100,7 +101,7 @@ window.SLC = window.SLC || {};
   // (dove siamo, cosa c'è in gioco, chi attacca). L'emblema dell'avversario sta in EMBLEMS, con la stessa chiave k.
   // pool = tecniche possibili per fase: quella usata davvero viene estratta a ogni attacco.
   // hide = fasi su cui il briefing non dà informazioni. intel = carte già scoperte a inizio attacco.
-  // reserves = quante volte l'avversario può cambiare tecnica. wants = carte che il negozio propone prima di questa missione.
+  // reserves = quante volte l'attaccante può cambiare tecnica. wants = carte che il negozio propone prima di questa missione.
   // real = l'incidente vero a cui la missione si ispira.
   G.FOES = [
     { k: 'nottola', scene: 'valdoria',
@@ -109,7 +110,7 @@ window.SLC = window.SLC || {};
         ["Oggi pompe e valvole si comandano da un portale web.","Il comune ha appena alzato le tariffe, e in città c'è chi non l'ha presa bene.","Stanotte qualcuno sta bussando a tutte le porte di quel portale."],
         ["Il Collettivo Nottola. Hacktivisti.","Hanno promesso di «aprire i rubinetti dei dati».","Sono rumorosi e impazienti: cercano un servizio esposto ed entrano da lì."],
       ],
-      city: 'Valdoria', site: 'Acquedotto municipale', n: 'Collettivo Nottola', tag: 'Hacktivisti', goal: 250, reserves: 0, intel: 3, hide: [],
+      city: 'Valdoria', site: 'Acquedotto municipale', n: 'Collettivo Nottola', tag: 'Hacktivisti', goal: 350, reserves: 0, intel: 3, hide: [],
       pool: [['scan', 'osint'], ['tool', 'maldev'], ['phish'], ['pubexp'], ['acct', 'autorun'], ['c2web'], ['exfil']],
       brief: 'L\'acquedotto di Valdoria ha alzato le tariffe e il Collettivo Nottola ha promesso di «aprire i rubinetti dei dati». Sono rumorosi e poco pazienti: cercano un servizio esposto, entrano e pubblicano quello che trovano.',
       after: 'Tra i file che i Nottola volevano pubblicare c\'è uno strumento che non hanno scritto loro. Nel codice qualcuno ha lasciato una firma: un piccolo cerchio nero.',
@@ -120,7 +121,7 @@ window.SLC = window.SLC || {};
         ["Cartelle cliniche, sale operatorie, farmacia: ogni reparto dipende dai computer.","Da qualche giorno arrivano email con finti referti in allegato.","Basta che una persona, una sola, apra quello sbagliato."],
         ["La Banda Ryvex. Estorsori.","Entrano sempre dalle persone, cifrano tutto e chiedono un riscatto.","In corsia nessuno può permettersi uno schermo nero."],
       ],
-      city: 'San Brivio', site: 'Ospedale civile', n: 'Banda Ryvex', tag: 'Ransomware', goal: 400, reserves: 1, intel: 2, hide: [5], wants: ['allow'],
+      city: 'San Brivio', site: 'Ospedale civile', n: 'Banda Ryvex', tag: 'Ransomware', goal: 300, reserves: 1, intel: 2, hide: [5], wants: ['allow'],
       pool: [['osint', 'infophish'], ['maldev', 'tool'], ['phish', 'usb'], ['macro'], ['autorun', 'service'], ['c2web', 'c2dns'], ['ransom']],
       hint: 'All\'ospedale di San Brivio girano email con finti referti in allegato.',
       brief: 'All\'ospedale di San Brivio arrivano email con finti referti. La Banda Ryvex entra sempre dalle persone, cifra tutto e chiede un riscatto. In corsia nessuno può permettersi uno schermo nero.',
@@ -132,7 +133,7 @@ window.SLC = window.SLC || {};
         ["I tecnici controllano serbatoi e pompe da casa.","Usano accessi remoti aperti anni fa e mai più ricontrollati.","Qualcuno ha appena comprato le chiavi di uno di quegli accessi."],
         ["Il Sindacato Vorago. Crimine organizzato.","Non scrivono malware: comprano password rubate e strumenti pronti.","Entrano, colpiscono in fretta e spariscono."],
       ],
-      city: 'Altamare', site: 'Terminal petrolifero', n: 'Sindacato Vorago', tag: 'Crimine organizzato', goal: 550, reserves: 2, intel: 1, hide: [4], wants: ['mfa', 'least'],
+      city: 'Altamare', site: 'Terminal petrolifero', n: 'Sindacato Vorago', tag: 'Crimine organizzato', goal: 450, reserves: 2, intel: 1, hide: [4], wants: ['mfa', 'least'],
       pool: [['scan', 'osint'], ['tool'], ['remote'], ['valid', 'pubexp'], ['acct', 'service'], ['rat', 'c2web'], ['ransom', 'exfil']],
       hint: 'Ad Altamare si parla di accessi remoti lasciati aperti e di password riutilizzate.',
       brief: 'Il terminal di Altamare rifornisce di carburante mezza Calvera. Il Sindacato Vorago non scrive malware: compra password rubate e strumenti pronti, entra dagli accessi remoti e colpisce in fretta.',
@@ -144,7 +145,7 @@ window.SLC = window.SLC || {};
         ["La banca ha difese solide.","I suoi fornitori molto meno: manutentori, software house, ditte con un accesso di cui nessuno si ricorda.","Una catena è forte quanto il suo anello più debole."],
         ["Il Consorzio Mano Terza.","Non attaccano mai di fronte.","Entrano da chi lavora per te."],
       ],
-      city: 'Lumera', site: 'Banca di Lumera', n: 'Consorzio Mano Terza', tag: 'Attacco alla filiera', goal: 700, reserves: 1, intel: 2, hide: [1, 5], wants: ['vendor', 'domwatch'],
+      city: 'Lumera', site: 'Banca di Lumera', n: 'Consorzio Mano Terza', tag: 'Attacco alla filiera', goal: 450, reserves: 1, intel: 2, hide: [1, 5], wants: ['vendor', 'domwatch'],
       pool: [['osint', 'infophish'], ['domain', 'tool'], ['supply', 'remote'], ['valid'], ['service', 'acct'], ['c2dns', 'rat'], ['exfil']],
       hint: 'A Lumera nessuno attacca la banca di fronte: i sospetti cadono su fornitori e manutentori.',
       brief: 'La Banca di Lumera ha difese solide, e infatti nessuno la attacca di fronte. La Mano Terza passa dai fornitori: chi fa manutenzione, chi vende software, chi ha un accesso di cui nessuno si ricorda.',
@@ -156,12 +157,12 @@ window.SLC = window.SLC || {};
         ["Da mesi qualcuno è dentro la rete della centrale.","Non ha toccato nulla: sta guardando e imparando.","Aspetta soltanto il momento in cui spegnere fa più male."],
         ["La Gru Cenerina. Un gruppo al servizio di uno Stato.","Non vuole rubare: vuole spegnere.","E sa come nascondersi al tuo SOC."],
       ],
-      city: 'Monteluce', site: 'Centrale elettrica', n: 'Gru Cenerina', tag: 'Boss · gruppo statale', goal: 850, reserves: 2, intel: 1, hide: [2, 3, 5], wants: ['segm'],
+      city: 'Monteluce', site: 'Centrale elettrica', n: 'Gru Cenerina', tag: 'Boss · gruppo statale', goal: 550, reserves: 2, intel: 1, hide: [2, 3, 5], wants: ['segm'],
       pool: [['osint', 'infophish'], ['maldev'], ['phish', 'supply'], ['macro', 'valid'], ['service', 'autorun'], ['c2dns', 'c2web'], ['wipe']],
       hint: 'A Monteluce qualcuno è nella rete della centrale da mesi, senza toccare nulla.',
       brief: 'La centrale di Monteluce alimenta la capitale. La Gru Cenerina lavora per uno Stato: è paziente, silenziosa, capace di restare mesi in una rete prima di muoversi. Non vuole rubare: vuole spegnere.',
       after: 'Nei sistemi della Gru Cenerina trovi un calendario. Una sola data è cerchiata in nero: la notte delle elezioni. L\'operazione ha un nome: Eclissi.',
-      boss: { k: 'silent', n: 'Silenzioso', e: 'Ogni analisi del SOC costa 2 crediti.' },
+      boss: { k: 'silent', n: 'Silenzioso', e: 'Niente analisi gratuita: ogni analisi del SOC costa 1 credito.' },
       real: { t: 'Rete elettrica ucraina, 2015', d: 'Email di phishing portarono il malware BlackEnergy nelle società elettriche. Mesi dopo gli attaccanti aprirono a distanza gli interruttori: circa 225.000 utenze rimasero senza corrente per ore.', l: 'Chi punta a un\'infrastruttura non ha fretta: va cercato quando è ancora silenzioso.' } },
     { k: 'eclissi', scene: 'rocca',
       cut: [
@@ -169,7 +170,7 @@ window.SLC = window.SLC || {};
         ["Nei palazzi dello Stato si contano i voti.","Gli uffici sono vuoti: è venerdì sera, e il SOC lavora a ranghi ridotti.","Sopra la città, la luna è sparita."],
         ["Operazione Eclissi.","Gli attacchi delle scorse settimane erano prove generali.","Ora usa tutto quello che ha imparato su Calvera."],
       ],
-      city: 'Rocca Ardenza', site: 'Notte delle elezioni', n: 'Operazione Eclissi', tag: 'Boss finale', goal: 1100, reserves: 3, intel: 1, hide: [0, 2, 3, 4, 5],
+      city: 'Rocca Ardenza', site: 'Notte delle elezioni', n: 'Operazione Eclissi', tag: 'Boss finale', goal: 250, reserves: 3, intel: 1, hide: [0, 2, 3, 4, 5],
       pool: [['scan', 'osint', 'infophish'], ['maldev', 'domain'], ['supply', 'phish', 'remote'], ['valid', 'pubexp', 'macro'], ['autorun', 'acct', 'service'], ['c2web', 'c2dns', 'rat'], ['wipe', 'ransom']],
       hint: 'A Rocca Ardenza è la notte delle elezioni. Eclissi sa già tutto di Calvera.',
       brief: 'È la notte delle elezioni e a Rocca Ardenza i sistemi dello Stato contano i voti. Gli attacchi delle settimane scorse erano prove generali. Eclissi usa tutto quello che ha imparato su Calvera e colpisce di venerdì sera, a uffici vuoti.',
