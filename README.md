@@ -74,6 +74,7 @@ Progress is saved in the browser's local storage at every briefing and shop.
 | `js/audio.js` | Sound effects and music, synthesised with the Web Audio API |
 | `js/bg.js` | Animated background |
 | `js/autotest.js` | Development tool, see below |
+| `docs/design/` | Design documentation: learning objectives, task analysis, mission design, prototypes and storyboards |
 
 All graphics and audio are generated in code; the repository contains no image or sound assets other than the README screenshots.
 
